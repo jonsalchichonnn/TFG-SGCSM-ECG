@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sgcsm_ecg.mapper.MenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.sgcsm_ecg.entity.Menu">
+        <id column="id" property="id" />
+        <result column="menu_code" property="menuCode" />
+        <result column="menu_name" property="menuName" />
+        <result column="menu_level" property="menuLevel" />
+        <result column="menu_parent_code" property="menuParentCode" />
+        <result column="menu_path" property="menuPath" />
+        <result column="menu_right" property="menuRight" />
+        <result column="menu_component" property="menuComponent" />
+        <result column="menu_icon" property="menuIcon" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, menu_code, menu_name, menu_level, menu_parent_code, menu_path, menu_right, menu_component, menu_icon
+    </sql>
+
+</mapper>
