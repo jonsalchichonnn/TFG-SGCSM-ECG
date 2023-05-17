@@ -1,14 +1,14 @@
 <template>
-  <el-container style="height: 100%; border: 1px solid #eee">
+  <el-container style="height: 100%; border: 1px solid #eee;background-color: lavender">
     <el-aside
-      width="auto"
-      style="background-color: #3f5a9e; margin-left: -1px; margin-top: -1px"
+        width="auto"
+        style="background-color: #3f5a9e; margin-left: -1px; margin-top: -1px"
     >
       <MyAside></MyAside>
     </el-aside>
     <el-container style="height: 100%">
       <el-header
-        style="
+          style="
           height: 100%;
           text-align: right;
           font-size: 12px;
@@ -18,8 +18,8 @@
         <MyHeader></MyHeader>
       </el-header>
 
-      <el-main style="height: 100%">
-<!--        <MyMain></MyMain>-->
+      <el-main style="height: 100%; background-color: lavender"> <!-- linen lavender #EFF2F3 -->
+        <!--        <MyMain></MyMain>-->
         <router-view/>
       </el-main>
     </el-container>
@@ -30,9 +30,11 @@
 .el-aside {
   color: #333;
 }
+
 .el-main {
   padding: 15px;
 }
+
 .el-header {
   /* background-color: #3f5a9e; */
   background-color: white;
@@ -48,6 +50,6 @@ import MyHeader from "./MyHeader.vue";
 
 export default {
   name: "HomePage",
-  components: { MyAside, MyHeader },
+  components: {MyAside, MyHeader},
 };
 </script>

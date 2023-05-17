@@ -10,8 +10,10 @@ public class UserDTO {
     Integer sex;
     String account;
 
+    Integer role;
+
     public boolean allNull(){
         return pageNum == null && pageSize == null &&
-                name == null && sex == null && account == null;
+                name == null && sex == null && account == null && role == null;
     }
 }

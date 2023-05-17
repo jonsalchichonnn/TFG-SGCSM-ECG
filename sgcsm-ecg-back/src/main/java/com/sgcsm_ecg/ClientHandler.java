@@ -1,5 +1,10 @@
 package com.sgcsm_ecg;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sgcsm_ecg.entity.Device;
+import com.sgcsm_ecg.entity.DeviceDTO;
+import com.sgcsm_ecg.service.DeviceService;
+
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
 import java.io.DataInputStream;
@@ -10,9 +15,14 @@ import java.io.OutputStream;
 public class ClientHandler implements Runnable {
 
     private SSLSocket clientSocket;
+    private DeviceService deviceService;
 
     public ClientHandler(SSLSocket clientSocket) {
         this.clientSocket = clientSocket;
+    }
+
+    private DeviceService getDeviceService() {
+        return SpringContext.getBean(DeviceService.class);
     }
 
     @Override
@@ -40,16 +50,26 @@ public class ClientHandler implements Runnable {
 
             // Read input msg
             String sslRecvMsg = sslInput.readUTF();
-            System.err.println("MESSAGE RECEIVED >>>>:   " + sslRecvMsg);
+
+            // Convert JSON to Object
+            ObjectMapper objectMapper = new ObjectMapper();
+            DeviceDTO deviceDTO = objectMapper.readValue(sslRecvMsg, DeviceDTO.class);
+
+            Device device = new Device(deviceDTO.getId(), sslRecvMsg);
+//            deviceService = getDeviceService();
+//            deviceService.saveOrUpdate(device);
+            getDeviceService().saveOrUpdate(device);
+
 
 //            String fechaactual = new Date().toString();
 //				String serverEchoResponse = "     >>>ACK(" + fechaactual + ")";
 
             // Thread.currentThread().sleep(10000);
             // 10 segundos
-
-            sslOutput.writeUTF("<<<<<<<<<<<<<<<<<<<<<<<<<RESPONSE MESSAGE FROM SERVER");
-
+            String deviceJSON = objectMapper.writeValueAsString(deviceDTO);
+            System.err.println(deviceJSON);
+            sslOutput.writeUTF(deviceJSON);
+//            sslOutput.writeUTF("<<<<<<<<<<<<<<<<<<<<<<<<<RESPONSE MESSAGE FROM SERVER");
 //            System.err.println(sslRecvMsg);
             clientSocket.close();
         } catch (Exception e) {

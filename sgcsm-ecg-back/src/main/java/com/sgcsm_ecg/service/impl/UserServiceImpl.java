@@ -3,16 +3,15 @@ package com.sgcsm_ecg.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sgcsm_ecg.common.HttpResponse;
 import com.sgcsm_ecg.common.UserDTO;
 import com.sgcsm_ecg.entity.User;
 import com.sgcsm_ecg.mapper.UserMapper;
 import com.sgcsm_ecg.service.UserService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 /**
  * <p>
@@ -25,7 +24,7 @@ import java.util.Objects;
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
-//    @Override
+    //    @Override
     public HttpResponse<List<User>> getUsers(Integer pageNum, Integer pageSize, String name, Integer sex) {
         List<User> records;
         if (pageNum == null || pageSize == null) {
@@ -34,7 +33,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         } else {
             LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
             lambdaQueryWrapper.like(StringUtils.isNotBlank(name),
-                    User::getName,name);
+                    User::getName, name);
             lambdaQueryWrapper.eq(sex != null && sex >= 0 && sex <= 1,
                     User::getSex, sex);
 
@@ -57,11 +56,19 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<>();
             // check duplicate accounts
             lambdaQueryWrapper.eq(StringUtils.isNotBlank(dto.getAccount()),
-                    User::getAccount,dto.getAccount());
+                    User::getAccount, dto.getAccount());
+
             lambdaQueryWrapper.like(StringUtils.isNotBlank(dto.getName()),
-                    User::getName,dto.getName());
-            lambdaQueryWrapper.eq(dto.getSex() != null && dto.getSex() >= 0 && dto.getSex() <= 1,
-                    User::getSex, dto.getSex());
+                    User::getName, dto.getName());
+            // filter by sex
+            Integer sex = dto.getSex();
+            lambdaQueryWrapper.eq(sex != null && sex >= 0 && sex <= 1,
+                    User::getSex, sex);
+
+            // filter by role
+            Integer role = dto.getRole();
+            lambdaQueryWrapper.eq(role != null && role >= 0 && role <= 2,
+                    User::getRole, role);
 
             Page<User> p = new Page<>(dto.getPageNum(), dto.getPageSize());
             page(p, lambdaQueryWrapper);
@@ -73,12 +80,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public HttpResponse<?> createUser(User user) {
-        return save(user)? HttpResponse.created() : HttpResponse.fail("Could not create user");
+        return save(user) ? HttpResponse.created() : HttpResponse.fail("Could not create user");
     }
 
     @Override
     public HttpResponse<?> updateUser(int id, User user) {
-        if(StringUtils.isBlank(user.getPassword())){
+        if (StringUtils.isBlank(user.getPassword())) {
             String oldPass = getById(id).getPassword();
             user.setPassword(oldPass);
         }

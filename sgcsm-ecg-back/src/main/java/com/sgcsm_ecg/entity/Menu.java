@@ -16,7 +16,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value="Menu对象", description="")
+@ApiModel(value="Menu", description="")
 public class Menu implements Serializable {
 
     private static final long serialVersionUID = 1L;
