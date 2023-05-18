@@ -1,5 +1,5 @@
 <template>
-  <div style="text-align: center;background-color: #f1f1f3;height: 100%;padding: 0px;margin: 0px;">
+  <div style="text-align: center;background-color: #f1f1f3;height: 100%;padding: 0;margin: 0;">
     <h1 style="font-size: 50px;">{{ `Welcome ${user.name} !` }}</h1>
     <el-descriptions title="User Profile" :column="2" size="medium" border>
       <el-descriptions-item>
@@ -24,7 +24,7 @@
         <el-tag
             :type="user.sex === '1' ? 'primary' : 'danger'"
             disable-transitions><i
-            :class="user.sex === 1?'el-icon-male':'el-icon-female'"></i>{{ user.sex === 1 ? "男" : "女" }}
+            :class="user.sex === 1?'el-icon-male':'el-icon-female'"></i>{{ user.sex === 1 ? "M" : "F" }}
         </el-tag>
       </el-descriptions-item>
       <el-descriptions-item>
@@ -34,7 +34,7 @@
         </template>
         <el-tag
             type="success"
-            disable-transitions>{{ user.role === 0 ? "超级管理员" : (user.role === 1 ? "管理员" : "用户") }}
+            disable-transitions>{{ user.role === 0 ? "Super Admin" : (user.role === 1 ? "Admin" : "User") }}
         </el-tag>
 
       </el-descriptions-item>

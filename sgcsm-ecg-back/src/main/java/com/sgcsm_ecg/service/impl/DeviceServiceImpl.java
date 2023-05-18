@@ -28,7 +28,7 @@ import java.util.List;
 public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> implements DeviceService {
 
     @Override
-    public HttpResponse<?> getMenu(Integer pageNum, Integer pageSize, String id) {
+    public HttpResponse<?> getDevices(Integer pageNum, Integer pageSize, String id) {
         LambdaQueryWrapper<Device> lambdaQueryWrapper = new LambdaQueryWrapper<>();
         lambdaQueryWrapper.like(StringUtils.isNotBlank(id),
                 Device::getId, id);

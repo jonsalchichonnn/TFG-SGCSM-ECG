@@ -37,6 +37,7 @@ i {
 </style>
 
 <script>
+
 export default {
   name: "MyHeader",
   data() {
@@ -58,7 +59,10 @@ export default {
         center: true // center text
       })
           .then(() => {
+            // Clear user credentials
             sessionStorage.clear()
+            // Clear menu data
+            this.$store.commit('initRoutes', [])
             this.$router.replace("/login")
             this.$message.success("Logged out successfully!")
           })
@@ -67,7 +71,6 @@ export default {
           })
     },
     handleMenu() {
-      // alert("handleMenu");
       this.$store.commit("changeCollapse");
     },
   },

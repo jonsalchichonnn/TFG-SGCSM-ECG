@@ -14,5 +14,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface DeviceService extends IService<Device> {
 
-    HttpResponse<?> getMenu(Integer pageNum, Integer pageSize, String id);
+    HttpResponse<?> getDevices(Integer pageNum, Integer pageSize, String id);
 }

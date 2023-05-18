@@ -20,7 +20,8 @@
         <div slot="header" class="clearfix">
           <div class="device-info-tab">
             <div style="margin-bottom:5px;margin-top:5px;margin-right: 8px;">{{ device.id }}</div>
-            <div><img src="../../assets/ic_launcher.png" :alt="device.id" :title="device.id" class="device-img"></div>
+            <!-- crear funcion para poner ruta dinámica en :src -->
+            <div><img :src="img_src(device.brand)" :alt="device.id" :title="device.id" class="device-img"></div>
           </div>
         </div>
         <el-button type="primary" icon="el-icon-more" size="medium" style="margin-left: 5px" @click="popDialog"
@@ -37,15 +38,6 @@
         >
           <div class="device-info-container">
             <el-collapse v-model="activeName" accordion> <!-- @change="change" -->
-              <!--            <el-collapse-item :title="r.nameZh" :name="r.id" v-for="(r,index) in roles" :key="index">-->
-              <!--              <el-card class="box-card">-->
-              <!--                <div slot="header" class="clearfix">-->
-              <!--                  <span>可访问资源</span>-->
-              <!--                  <el-button type="text" icon="el-icon-delete" style="float: right;padding: 3px 0;color: #f41f0a" @click="doDeleteRole(r)">-->
-              <!--                  </el-button>-->
-              <!--                </div>-->
-              <!--              </el-card>-->
-              <!--            </el-collapse-item>-->
               <el-collapse-item title="System" name="1">
                 <div>Brand：{{ device.brand }}</div>
                 <div>Model：{{ device.model }}</div>
@@ -68,83 +60,89 @@
               </el-collapse-item>
 
               <el-collapse-item title="Storage" name="3">
-                <h4>Storage</h4>
-                <el-progress :percentage="device.usedMemPct"></el-progress>
-                <div>Total：{{ device.totalMemGb }} GB</div>
-                <div>Used：{{ device.usedMem }}</div>
-                <div>Free：{{ device.freeMem }}</div>
-                <!--            <div>Load level：{{ device.usedMemPct }} %</div>-->
-                <h4>RAM</h4>
-                <el-progress :percentage="device.usedRamPct"></el-progress>
-                <div>Total：{{ device.totalRamGb }}</div>
-                <div>Used：{{ device.usedRamGb }}</div>
-                <div>Free：{{ device.freeRamGb }}</div>
-                <!--            <div>Load level：{{ device.usedRamPct }} %</div>-->
+                <div style="display: flex;justify-content: space-evenly;">
+                  <div>
+                    <h4 style="color: #2552E4;margin-bottom: 8px">Storage</h4>
+                    <el-progress stroke-width="3" width=100 type="circle"
+                                 :percentage="round(device.usedMemPct)"></el-progress>
+                    <div style="margin-top: 8px">Total：{{ device.totalMemGb }} GB</div>
+                    <div>Used：{{ device.usedMem }}</div>
+                    <div>Free：{{ device.freeMem }}</div>
+                  </div>
+                  <br>
+                  <div>
+                    <h4 style="color: #2552E4;margin-bottom: 8px">RAM</h4>
+                    <el-progress stroke-width="3" width=100 type="circle"
+                                 :percentage="round(device.usedRamPct)"></el-progress>
+                    <div style="margin-top: 8px">Total：{{ device.totalRamGb }}</div>
+                    <div>Used：{{ device.usedRamGb }}</div>
+                    <div>Free：{{ device.freeRamGb }}</div>
+                  </div>
+                </div>
               </el-collapse-item>
 
               <el-collapse-item title="Graphics" name="4">
-                <h4>Screen</h4>
-                <div>Inches：{{ device.screenInches }}</div>
+                <h4 class="h4-custom">Screen</h4>
+                <div><span style="font-weight: bold">Inches：</span>{{ device.screenInches }}</div>
                 <div>Resolution：{{ device.screenWidth }} x {{ device.screenHeight }} px</div>
-                <div>Density：{{ device.density }}</div>
-                <div>Refresh Rate：{{ device.refreshRate }}</div>
+                <div>Density：{{ device.density }} dpi</div>
+                <div>Refresh Rate：{{ device.refreshRate }} Hz</div>
                 <div>HDR Capabilities：{{ device.hdrCapabilities }}</div>
-                <!--            <div>Total：{{ device.screenWidth }}</div>-->
-                <!--            <div>Total：{{ device.screenHeight }}</div>-->
-                <h4>GPU</h4>
+                <br>
+                <h4 class="h4-custom">GPU</h4>
                 <div>Vendor：{{ device.renderer }}</div>
                 <div>Renderer：{{ device.vendor }}</div>
                 <div>OpenGL Version：{{ device.openglVersion }}</div>
               </el-collapse-item>
 
               <el-collapse-item title="Network" name="5">
-                <!-- FALTA ASIGNAR STATUS EN ANDROID -->
                 <div>Status：{{ device.status }}</div> <!-- ambos -->
-                <div>SSID：{{ device.ssid }}</div>
-                <div>BSSID：{{ device.bssid }}</div>
-                <div>Signal：{{ device.wifiStrength }}</div>
-                <div>Link Speed：{{ device.linkSpeed }}</div>
-                <div>Frequency：{{ device.wifiFreqGhz }} GHz / {{ device.wifiFreq }} MHz</div>
+                <div v-show="device.ssid">SSID：{{ device.ssid }}</div>
+                <div v-show="device.bssid">BSSID：{{ device.bssid }}</div>
+                <div v-show="device.wifiStrength">Signal：{{ device.wifiStrength }}</div>
+                <div v-show="device.linkSpeed">Link Speed：{{ device.linkSpeed }}</div>
+                <div v-show="device.wifiFreqGhz">Frequency：{{ device.wifiFreqGhz }} GHz / {{ device.wifiFreq }} MHz</div>
 
-                <div>Down/Upload Speed：{{ device.downSpeed }} / {{ device.upSpeed }} Mbps</div>
+                <div v-show="device.status && !device.status.startsWith('Offline')">Down/Upload Speed：{{ device.downSpeed }} / {{ device.upSpeed }} Mbps</div>
 
-                <div>IP Address：{{ device.ip }}</div><!-- wifi -->
-                <div>MAC Address：{{ device.realmac }}</div>
-                <div>Gateway：{{ device.gateway }}</div>
-                <div>Netmask：{{ device.netmask }}</div>
-                <div>DNS1：{{ device.dns1 }}</div>
-                <div>DNS2：{{ device.dns2 }}</div>
+                <div v-show="device.ip">IP Address：{{ device.ip }}</div><!-- wifi -->
+                <div v-show="device.realmac">MAC Address：{{ device.realmac }}</div>
+                <div v-show="device.gateway">Gateway：{{ device.gateway }}</div>
+                <div v-show="device.netmask">Netmask：{{ device.netmask }}</div>
+                <div v-show="device.dns1">DNS1：{{ device.dns1 }}</div>
+                <div v-show="device.dns2">DNS2：{{ device.dns2 }}</div>
 
                 <!-- cell network -->
-                <div>Signal：{{ device.cellSignal }}</div>
-                <div>Network Type：{{ device.cellNetworkType }}</div>
-                <div>IP Address：{{ device.cellIp }}</div>
+                <div v-show="device.cellSignal">Signal：{{ device.cellSignal }}</div>
+                <div v-show="device.cellNetworkType">Network Type：{{ device.cellNetworkType }}</div>
+                <div v-show="device.cellIp">IP Address：{{ device.cellIp }}</div>
 
               </el-collapse-item>
 
               <el-collapse-item title="Location" name="6">
-                <div>Latitude：{{ device.latitude }}</div>
-                <div>Longitude：{{ device.longitude }}</div>
+                <div>Latitude：{{ device.latitude ? device.latitude : NOT_AVAILABLE }}</div>
+                <div>Longitude：{{ device.longitude ? device.longitude : NOT_AVAILABLE}}</div>
               </el-collapse-item>
 
               <el-collapse-item title="Sensors" name="7">
                 <div v-for="(sensor,index) in device.sensors" :key="index">
-                  <div>{{ sensor.name }}</div>
-                  <div>{{ sensor.type }}</div>
-                  <div>{{ sensor.vendor }}</div>
-                  <div>{{ sensor.version }}</div>
-                  <div>{{ sensor.power }}</div>
+
+                  <h4 class="h4-custom">{{ sensor.name }}</h4>
+                  <div>Type: {{ sensor.type }}</div>
+                  <div>Vendor: {{ sensor.vendor }}</div>
+                  <div>Version: {{ sensor.version }}</div>
+                  <div>Power: {{ sensor.power }}</div>
                   <br>
                 </div>
               </el-collapse-item>
 
               <el-collapse-item title="Camera" name="8">
-                <h4>Front</h4>
+                <h4 class="h4-custom">Front</h4>
                 <div>Pixels：{{ device.frontResolution }}</div>
                 <div>Resolution：{{ device.frontWidth }} x {{ device.frontHeight }}</div>
                 <div>Flash：{{ device.frontFlash }}</div>
 
-                <h4>Rear</h4>
+                <h4 class="h4-custom">Rear</h4>
                 <div>Pixels：{{ device.rearResolution }}</div>
                 <div>Resolution：{{ device.rearWidth }} x {{ device.rearHeight }}</div>
                 <div>Flash：{{ device.rearFlash }}</div>
@@ -178,6 +176,10 @@
 /*  color: #333;*/
 /*  line-height: 60px;*/
 /*}*/
+.h4-custom {
+  color: #2552E4;
+  border-bottom: lightgrey solid
+}
 
 .device-container {
   margin-top: 8px;
@@ -205,7 +207,12 @@
 </style>
 
 <script>
+import launcher from "../../assets/ic_launcher.png";
+import samsung from "../../assets/samsung.jpg";
+import huawei from "../../assets/huawei.png";
+import realme from "../../assets/realme.png";
 export default {
+
   name: "DeviceManage",
   data() {
     let checkDuplicate = (rule, value, callback) => {
@@ -229,6 +236,11 @@ export default {
           });
     };
     return {
+      launcherSrc: launcher,
+      samsungSrc: samsung,
+      huaweiSrc:huawei,
+      realmeSrc: realme,
+      NOT_AVAILABLE: "Not Available",
       loading: false,
       disableEdit: false,
       centerDialogVisible: false,
@@ -258,6 +270,21 @@ export default {
     };
   },
   methods: {
+    round(num) {
+      return Math.round(num * 100) / 100
+    },
+    img_src(brand){
+      let lowerBrand = brand.toLowerCase();
+      let src = this.launcherSrc;
+      if(lowerBrand === "samsung")
+        src = this.samsungSrc;
+      else if(lowerBrand === "huawei") {
+        src = this.huaweiSrc;
+      } else if(lowerBrand === "realme")
+        src = this.realmeSrc;
+      // return `'../../assets/${path}'`
+      return src
+    },
     showDialog(show) {
       this.centerDialogVisible = show;
     },

@@ -25,7 +25,7 @@ public class DeviceController {
 
     @GetMapping()
     public HttpResponse<?> getDevices(Integer pageNum, Integer pageSize, String id) {
-        return deviceService.getMenu(pageNum, pageSize,id);
+        return deviceService.getDevices(pageNum, pageSize,id);
     }
 
 }

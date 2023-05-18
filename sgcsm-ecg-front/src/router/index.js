@@ -3,20 +3,18 @@ import Login from "@/views/Login";
 import Home from "@/components/HomePage";
 // import Welcome from "@/views/Welcome";
 
-const router = new VueRouter({
-    mode: "history",
-    routes: [
-        {
-            path: "/login",
-            name: "login",
-            component: Login,
-        },
-        {
-            path: "/",
-            name: "base",
-            component: Home,
-            redirect:'welcome',
-            children: [
+const defaultRoutes = [
+    {
+        path: "/login",
+        name: "login",
+        component: Login,
+    },
+    {
+        path: "/",
+        name: "base",
+        component: Home,
+        redirect: 'welcome',
+        children: [
             //     {
             //         path: '/',
             //         name: 'welcome',
@@ -25,16 +23,20 @@ const router = new VueRouter({
             //         },
             //         component: Welcome
             //     },
-             ]
-        },
-    ],
+        ]
+    }]
+const router = new VueRouter({
+    mode: "history",
+    // clone array
+    routes: [...defaultRoutes],
 });
 
 export function resetRouter() {
-    router.matcher = new VueRouter({
-        mode:'history',
-        routes: []
-    }).matcher
+    // router.matcher = new VueRouter({
+    //     mode: 'history',
+    //     routes: []
+    // }).matcher
+    router.options.routes = defaultRoutes
 }
 
 export default router;
