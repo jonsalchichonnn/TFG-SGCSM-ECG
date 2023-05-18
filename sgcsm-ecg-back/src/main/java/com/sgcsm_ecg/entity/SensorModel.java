@@ -1,14 +1,22 @@
 package com.sgcsm_ecg.entity;
 
+import cn.afterturn.easypoi.excel.annotation.Excel;
+
 public class SensorModel {
 
-
+    @Excel(name = "Name")
     private String name;
 
+    @Excel(name = "Type")
     private String type;
 
+    @Excel(name = "Vendor")
     private String vendor;
+
+    @Excel(name = "Version")
     private int version;
+
+    @Excel(name = "Power")
     private float power;
 
     public SensorModel(){

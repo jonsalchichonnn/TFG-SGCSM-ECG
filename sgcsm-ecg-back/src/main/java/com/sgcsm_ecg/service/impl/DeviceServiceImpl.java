@@ -36,19 +36,53 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         page(p, lambdaQueryWrapper);
 
         // HACE FALTA CONVERTIR JSON A OBJETOS Y MANDARLOS?
-        List<DeviceDTO> result = new ArrayList<>();
-        for (Device d : p.getRecords()) {
+//        List<DeviceDTO> result = new ArrayList<>();
+//        for (Device d : p.getRecords()) {
+//            // Convert JSON to Object
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            try {
+//                DeviceDTO deviceDTO = objectMapper.readValue(d.getProperties(), DeviceDTO.class);
+//                result.add(deviceDTO);
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        List<DeviceDTO> result = toDTOList(p.getRecords());
+        return HttpResponse.success(result, p.getTotal());
+//        List<Device> menus = lambdaQuery().like(Device::getId, id).list();
+//        return HttpResponse.success(menus);
+    }
+
+    @Override
+    public List<DeviceDTO> getAllDevices() {
+        List<Device> devList = list();
+        return toDTOList(devList);
+//        List<DeviceDTO> dtoList = new ArrayList<>(devList.size());
+//        for(Device d : devList){
+//            // Convert JSON to Object
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            try {
+//                DeviceDTO deviceDTO = objectMapper.readValue(d.getProperties(), DeviceDTO.class);
+//                dtoList.add(deviceDTO);
+//            } catch (JsonProcessingException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//        return dtoList;
+    }
+
+    private List<DeviceDTO> toDTOList(List<Device> devList){
+        List<DeviceDTO> dtoList = new ArrayList<>(devList.size());
+        for(Device d : devList){
             // Convert JSON to Object
             ObjectMapper objectMapper = new ObjectMapper();
             try {
                 DeviceDTO deviceDTO = objectMapper.readValue(d.getProperties(), DeviceDTO.class);
-                result.add(deviceDTO);
+                dtoList.add(deviceDTO);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
         }
-        return HttpResponse.success(result, p.getTotal());
-//        List<Device> menus = lambdaQuery().like(Device::getId, id).list();
-//        return HttpResponse.success(menus);
+        return dtoList;
     }
 }

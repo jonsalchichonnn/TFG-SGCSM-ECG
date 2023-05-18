@@ -59,6 +59,12 @@
 			<artifactId>spring-boot-starter-swagger</artifactId>
 			<version>1.5.1.RELEASE</version>
 		</dependency>
+		<!-- easy poi dependency (import & export data) -->
+		<dependency>
+			<groupId>cn.afterturn</groupId>
+			<artifactId>easypoi-spring-boot-starter</artifactId>
+			<version>4.2.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
