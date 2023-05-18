@@ -8,11 +8,13 @@ import store from "@/store";
 import axios from "axios";
 import router from "./router";
 import {initMenu} from "@/utils/menu-utils";
+import {downloadRequest} from "@/utils/download-utils";
 
 Vue.config.productionTip = false;
 // axios configuration
 Vue.prototype.$axios = axios;
 axios.defaults.baseURL = "http://localhost:8090";
+Vue.prototype.downloadRequest = downloadRequest;
 
 Vue.use(ElementUI);
 Vue.use(VueRouter);

@@ -1,21 +1,30 @@
 <template>
   <div>
-    <div class="search-bar" style="display: flex;justify-content: center;margin-bottom: 16px">
-      <el-input
-          v-model="deviceId"
-          placeholder="Search by device ID"
-          suffix-icon="el-icon-search"
-          style="width: 200px"
-          @keyup.enter.native="getDevices"
-      ></el-input>
-      <el-button type="primary" size="medium" icon="el-icon-search" style="margin-left: 5px" @click="search"
-      >Search
-      </el-button
-      >
-      <el-button type="success" size="medium" icon="el-icon-refresh" @click="resetParam">Reset</el-button>
+    <div style="display: flex;justify-content: space-around;margin-bottom: 16px">
+      <div class="search-bar">
+        <el-input
+            v-model="deviceId"
+            placeholder="Search by device ID"
+            suffix-icon="el-icon-search"
+            style="width: 200px"
+            @keyup.enter.native="getDevices"
+        ></el-input>
+        <el-button type="primary" size="medium" icon="el-icon-search" style="margin-left: 5px" @click="search"
+        >Search
+        </el-button
+        >
+        <el-button type="success" size="medium" icon="el-icon-refresh" @click="resetParam">Reset</el-button>
+      </div>
+      <div class="import-export">
+        <el-button type="success" @click="exportData"><i class="el-icon-download"></i>&nbsp; Export Data
+        </el-button>
+      </div>
     </div>
-
-    <div class="device-container">
+    <div class="device-container"
+         v-loading="loading"
+         element-loading-text="Loading..."
+         element-loading-spinner="el-icon-loading"
+         element-loading-background="rgba(0, 0, 0, 0.8)">
       <el-card class="device-card" v-for="(device,index) in devices" :key="index" shadow="always">
         <div slot="header" class="clearfix">
           <div class="device-info-tab">
@@ -63,7 +72,7 @@
                 <div style="display: flex;justify-content: space-evenly;">
                   <div>
                     <h4 style="color: #2552E4;margin-bottom: 8px">Storage</h4>
-                    <el-progress stroke-width="3" width=100 type="circle"
+                    <el-progress stroke-width=3 width=100 type="circle"
                                  :percentage="round(device.usedMemPct)"></el-progress>
                     <div style="margin-top: 8px">Total：{{ device.totalMemGb }} GB</div>
                     <div>Used：{{ device.usedMem }}</div>
@@ -72,7 +81,7 @@
                   <br>
                   <div>
                     <h4 style="color: #2552E4;margin-bottom: 8px">RAM</h4>
-                    <el-progress stroke-width="3" width=100 type="circle"
+                    <el-progress stroke-width=3 width=100 type="circle"
                                  :percentage="round(device.usedRamPct)"></el-progress>
                     <div style="margin-top: 8px">Total：{{ device.totalRamGb }}</div>
                     <div>Used：{{ device.usedRamGb }}</div>
@@ -101,9 +110,12 @@
                 <div v-show="device.bssid">BSSID：{{ device.bssid }}</div>
                 <div v-show="device.wifiStrength">Signal：{{ device.wifiStrength }}</div>
                 <div v-show="device.linkSpeed">Link Speed：{{ device.linkSpeed }}</div>
-                <div v-show="device.wifiFreqGhz">Frequency：{{ device.wifiFreqGhz }} GHz / {{ device.wifiFreq }} MHz</div>
+                <div v-show="device.wifiFreqGhz">Frequency：{{ device.wifiFreqGhz }} GHz / {{ device.wifiFreq }} MHz
+                </div>
 
-                <div v-show="device.status && !device.status.startsWith('Offline')">Down/Upload Speed：{{ device.downSpeed }} / {{ device.upSpeed }} Mbps</div>
+                <div v-show="device.status && !device.status.startsWith('Offline')">Down/Upload
+                  Speed：{{ device.downSpeed }} / {{ device.upSpeed }} Mbps
+                </div>
 
                 <div v-show="device.ip">IP Address：{{ device.ip }}</div><!-- wifi -->
                 <div v-show="device.realmac">MAC Address：{{ device.realmac }}</div>
@@ -121,7 +133,7 @@
 
               <el-collapse-item title="Location" name="6">
                 <div>Latitude：{{ device.latitude ? device.latitude : NOT_AVAILABLE }}</div>
-                <div>Longitude：{{ device.longitude ? device.longitude : NOT_AVAILABLE}}</div>
+                <div>Longitude：{{ device.longitude ? device.longitude : NOT_AVAILABLE }}</div>
               </el-collapse-item>
 
               <el-collapse-item title="Sensors" name="7">
@@ -153,7 +165,7 @@
 
       </el-card>
     </div>
-    <div style="margin-top: 16px">
+    <div style="margin-top: 32px">
       <el-pagination
           background
           @size-change="handleSizeChange"
@@ -182,10 +194,10 @@
 }
 
 .device-container {
-  margin-top: 8px;
+  margin-top: 32px;
   /*width: 700px;*/
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-wrap: wrap; /* automatically switch line */
 }
 
@@ -211,8 +223,8 @@ import launcher from "../../assets/ic_launcher.png";
 import samsung from "../../assets/samsung.jpg";
 import huawei from "../../assets/huawei.png";
 import realme from "../../assets/realme.png";
-export default {
 
+export default {
   name: "DeviceManage",
   data() {
     let checkDuplicate = (rule, value, callback) => {
@@ -238,7 +250,7 @@ export default {
     return {
       launcherSrc: launcher,
       samsungSrc: samsung,
-      huaweiSrc:huawei,
+      huaweiSrc: huawei,
       realmeSrc: realme,
       NOT_AVAILABLE: "Not Available",
       loading: false,
@@ -273,14 +285,14 @@ export default {
     round(num) {
       return Math.round(num * 100) / 100
     },
-    img_src(brand){
+    img_src(brand) {
       let lowerBrand = brand.toLowerCase();
       let src = this.launcherSrc;
-      if(lowerBrand === "samsung")
+      if (lowerBrand === "samsung")
         src = this.samsungSrc;
-      else if(lowerBrand === "huawei") {
+      else if (lowerBrand === "huawei") {
         src = this.huaweiSrc;
-      } else if(lowerBrand === "realme")
+      } else if (lowerBrand === "realme")
         src = this.realmeSrc;
       // return `'../../assets/${path}'`
       return src
@@ -334,6 +346,9 @@ export default {
       // this.$nextTick(() => {
       //   this.resetForm();
       // });
+    },
+    exportData() {
+      this.downloadRequest('/devices/export');
     },
     // saveUpdate() {
     //   this.$refs.addForm.validate((valid) => {
