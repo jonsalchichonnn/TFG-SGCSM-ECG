@@ -33,13 +33,12 @@
             <div><img :src="img_src(device.brand)" :alt="device.id" :title="device.id" class="device-img"></div>
           </div>
         </div>
-        <el-button type="primary" icon="el-icon-more" size="medium" style="margin-left: 5px" @click="popDialog"
+        <el-button type="primary" icon="el-icon-more" size="medium" style="margin-left: 5px" @click="popDialog(device)"
         >Details
         </el-button
         >
-
         <el-dialog
-            :title="device.id"
+            :title="dialogDev.id"
             :visible.sync="centerDialogVisible"
             width="30%"
             @close="disableEdit = false"
@@ -48,24 +47,24 @@
           <div class="device-info-container">
             <el-collapse v-model="activeName" accordion> <!-- @change="change" -->
               <el-collapse-item title="System" name="1">
-                <div>Brand：{{ device.brand }}</div>
-                <div>Model：{{ device.model }}</div>
-                <div>OS：{{ device.os }}</div>
-                <div>API Level：{{ device.api }}</div>
-                <div>Manufacturer：{{ device.manufacturer }}</div>
-                <div>Hardware：{{ device.hardware }}</div>
-                <div>Bootloader：{{ device.bootloader }}</div>
+                <div>Brand：{{ dialogDev.brand }}</div>
+                <div>Model：{{ dialogDev.model }}</div>
+                <div>OS：{{ dialogDev.os }}</div>
+                <div>API Level：{{ dialogDev.api }}</div>
+                <div>Manufacturer：{{ dialogDev.manufacturer }}</div>
+                <div>Hardware：{{ dialogDev.hardware }}</div>
+                <div>Bootloader：{{ dialogDev.bootloader }}</div>
               </el-collapse-item>
 
               <el-collapse-item title="Battery" name="2">
-                <div>Load level：{{ device.batLoad }} %</div>
-                <div>Temperature：{{ device.batTemp }} ºC</div>
-                <div>Power Source：{{ device.batPowerSrc }}</div>
-                <div>Status：{{ device.batStatus }}</div>
-                <div>Health：{{ device.batHealth }}</div>
-                <div>Technology：{{ device.batTech }}</div>
-                <div>Voltage：{{ device.batVoltage }} mV</div>
-                <div>Capacity：{{ device.batCapacity }} mAh</div>
+                <div>Load level：{{ dialogDev.batLoad }} %</div>
+                <div>Temperature：{{ dialogDev.batTemp }} ºC</div>
+                <div>Power Source：{{ dialogDev.batPowerSrc }}</div>
+                <div>Status：{{ dialogDev.batStatus }}</div>
+                <div>Health：{{ dialogDev.batHealth }}</div>
+                <div>Technology：{{ dialogDev.batTech }}</div>
+                <div>Voltage：{{ dialogDev.batVoltage }} mV</div>
+                <div>Capacity：{{ dialogDev.batCapacity }} mAh</div>
               </el-collapse-item>
 
               <el-collapse-item title="Storage" name="3">
@@ -73,71 +72,71 @@
                   <div>
                     <h4 style="color: #2552E4;margin-bottom: 8px">Storage</h4>
                     <el-progress stroke-width=3 width=100 type="circle"
-                                 :percentage="round(device.usedMemPct)"></el-progress>
-                    <div style="margin-top: 8px">Total：{{ device.totalMemGb }} GB</div>
-                    <div>Used：{{ device.usedMem }}</div>
-                    <div>Free：{{ device.freeMem }}</div>
+                                 :percentage="round(dialogDev.usedMemPct)"></el-progress>
+                    <div style="margin-top: 8px">Total：{{ dialogDev.totalMemGb }} GB</div>
+                    <div>Used：{{ dialogDev.usedMem }}</div>
+                    <div>Free：{{ dialogDev.freeMem }}</div>
                   </div>
                   <br>
                   <div>
                     <h4 style="color: #2552E4;margin-bottom: 8px">RAM</h4>
                     <el-progress stroke-width=3 width=100 type="circle"
-                                 :percentage="round(device.usedRamPct)"></el-progress>
-                    <div style="margin-top: 8px">Total：{{ device.totalRamGb }}</div>
-                    <div>Used：{{ device.usedRamGb }}</div>
-                    <div>Free：{{ device.freeRamGb }}</div>
+                                 :percentage="round(dialogDev.usedRamPct)"></el-progress>
+                    <div style="margin-top: 8px">Total：{{ dialogDev.totalRamGb }}</div>
+                    <div>Used：{{ dialogDev.usedRamGb }}</div>
+                    <div>Free：{{ dialogDev.freeRamGb }}</div>
                   </div>
                 </div>
               </el-collapse-item>
 
               <el-collapse-item title="Graphics" name="4">
                 <h4 class="h4-custom">Screen</h4>
-                <div><span style="font-weight: bold">Inches：</span>{{ device.screenInches }}</div>
-                <div>Resolution：{{ device.screenWidth }} x {{ device.screenHeight }} px</div>
-                <div>Density：{{ device.density }} dpi</div>
-                <div>Refresh Rate：{{ device.refreshRate }} Hz</div>
-                <div>HDR Capabilities：{{ device.hdrCapabilities }}</div>
+                <div><span style="font-weight: bold">Inches：</span>{{ dialogDev.screenInches }}</div>
+                <div>Resolution：{{ dialogDev.screenWidth }} x {{ dialogDev.screenHeight }} px</div>
+                <div>Density：{{ dialogDev.density }} dpi</div>
+                <div>Refresh Rate：{{ dialogDev.refreshRate }} Hz</div>
+                <div>HDR Capabilities：{{ dialogDev.hdrCapabilities }}</div>
                 <br>
                 <h4 class="h4-custom">GPU</h4>
-                <div>Vendor：{{ device.renderer }}</div>
-                <div>Renderer：{{ device.vendor }}</div>
-                <div>OpenGL Version：{{ device.openglVersion }}</div>
+                <div>Vendor：{{ dialogDev.renderer }}</div>
+                <div>Renderer：{{ dialogDev.vendor }}</div>
+                <div>OpenGL Version：{{ dialogDev.openglVersion }}</div>
               </el-collapse-item>
 
               <el-collapse-item title="Network" name="5">
-                <div>Status：{{ device.status }}</div> <!-- ambos -->
-                <div v-show="device.ssid">SSID：{{ device.ssid }}</div>
-                <div v-show="device.bssid">BSSID：{{ device.bssid }}</div>
-                <div v-show="device.wifiStrength">Signal：{{ device.wifiStrength }}</div>
-                <div v-show="device.linkSpeed">Link Speed：{{ device.linkSpeed }}</div>
-                <div v-show="device.wifiFreqGhz">Frequency：{{ device.wifiFreqGhz }} GHz / {{ device.wifiFreq }} MHz
+                <div>Status：{{ dialogDev.status }}</div> <!-- ambos -->
+                <div v-show="dialogDev.ssid">SSID：{{ dialogDev.ssid }}</div>
+                <div v-show="dialogDev.bssid">BSSID：{{ dialogDev.bssid }}</div>
+                <div v-show="dialogDev.wifiStrength">Signal：{{ dialogDev.wifiStrength }}</div>
+                <div v-show="dialogDev.linkSpeed">Link Speed：{{ dialogDev.linkSpeed }}</div>
+                <div v-show="dialogDev.wifiFreqGhz">Frequency：{{ dialogDev.wifiFreqGhz }} GHz / {{ dialogDev.wifiFreq }} MHz
                 </div>
 
-                <div v-show="device.status && !device.status.startsWith('Offline')">Down/Upload
-                  Speed：{{ device.downSpeed }} / {{ device.upSpeed }} Mbps
+                <div v-show="dialogDev.status && !dialogDev.status.startsWith('Offline')">Down/Upload
+                  Speed：{{ dialogDev.downSpeed }} / {{ dialogDev.upSpeed }} Mbps
                 </div>
 
-                <div v-show="device.ip">IP Address：{{ device.ip }}</div><!-- wifi -->
-                <div v-show="device.realmac">MAC Address：{{ device.realmac }}</div>
-                <div v-show="device.gateway">Gateway：{{ device.gateway }}</div>
-                <div v-show="device.netmask">Netmask：{{ device.netmask }}</div>
-                <div v-show="device.dns1">DNS1：{{ device.dns1 }}</div>
-                <div v-show="device.dns2">DNS2：{{ device.dns2 }}</div>
+                <div v-show="dialogDev.ip">IP Address：{{ dialogDev.ip }}</div><!-- wifi -->
+                <div v-show="dialogDev.realmac">MAC Address：{{ dialogDev.realmac }}</div>
+                <div v-show="dialogDev.gateway">Gateway：{{ dialogDev.gateway }}</div>
+                <div v-show="dialogDev.netmask">Netmask：{{ dialogDev.netmask }}</div>
+                <div v-show="dialogDev.dns1">DNS1：{{ dialogDev.dns1 }}</div>
+                <div v-show="dialogDev.dns2">DNS2：{{ dialogDev.dns2 }}</div>
 
                 <!-- cell network -->
-                <div v-show="device.cellSignal">Signal：{{ device.cellSignal }}</div>
-                <div v-show="device.cellNetworkType">Network Type：{{ device.cellNetworkType }}</div>
-                <div v-show="device.cellIp">IP Address：{{ device.cellIp }}</div>
+                <div v-show="dialogDev.cellSignal">Signal：{{ dialogDev.cellSignal }}</div>
+                <div v-show="dialogDev.cellNetworkType">Network Type：{{ dialogDev.cellNetworkType }}</div>
+                <div v-show="dialogDev.cellIp">IP Address：{{ dialogDev.cellIp }}</div>
 
               </el-collapse-item>
 
               <el-collapse-item title="Location" name="6">
-                <div>Latitude：{{ device.latitude ? device.latitude : NOT_AVAILABLE }}</div>
-                <div>Longitude：{{ device.longitude ? device.longitude : NOT_AVAILABLE }}</div>
+                <div>Latitude：{{ dialogDev.latitude ? dialogDev.latitude : NOT_AVAILABLE }}</div>
+                <div>Longitude：{{ dialogDev.longitude ? dialogDev.longitude : NOT_AVAILABLE }}</div>
               </el-collapse-item>
 
               <el-collapse-item title="Sensors" name="7">
-                <div v-for="(sensor,index) in device.sensors" :key="index">
+                <div v-for="(sensor,index) in dialogDev.sensors" :key="index">
 
                   <h4 class="h4-custom">{{ sensor.name }}</h4>
                   <div>Type: {{ sensor.type }}</div>
@@ -150,17 +149,18 @@
 
               <el-collapse-item title="Camera" name="8">
                 <h4 class="h4-custom">Front</h4>
-                <div>Pixels：{{ device.frontResolution }}</div>
-                <div>Resolution：{{ device.frontWidth }} x {{ device.frontHeight }}</div>
-                <div>Flash：{{ device.frontFlash }}</div>
+                <div>Pixels：{{ dialogDev.frontResolution }}</div>
+                <div>Resolution：{{ dialogDev.frontWidth }} x {{ dialogDev.frontHeight }}</div>
+                <div>Flash：{{ dialogDev.frontFlash }}</div>
 
                 <h4 class="h4-custom">Rear</h4>
-                <div>Pixels：{{ device.rearResolution }}</div>
-                <div>Resolution：{{ device.rearWidth }} x {{ device.rearHeight }}</div>
-                <div>Flash：{{ device.rearFlash }}</div>
+                <div>Pixels：{{ dialogDev.rearResolution }}</div>
+                <div>Resolution：{{ dialogDev.rearWidth }} x {{ dialogDev.rearHeight }}</div>
+                <div>Flash：{{ dialogDev.rearFlash }}</div>
               </el-collapse-item>
             </el-collapse>
           </div>
+
         </el-dialog>
 
       </el-card>
@@ -248,6 +248,7 @@ export default {
           });
     };
     return {
+      dialogDev: "",
       launcherSrc: launcher,
       samsungSrc: samsung,
       huaweiSrc: huawei,
@@ -341,8 +342,9 @@ export default {
       this.$refs.addForm.resetFields();
       this.addForm.id = ""
     },
-    popDialog() {
+    popDialog(device) {
       this.showDialog(true);
+      this.dialogDev = device
       // this.$nextTick(() => {
       //   this.resetForm();
       // });
