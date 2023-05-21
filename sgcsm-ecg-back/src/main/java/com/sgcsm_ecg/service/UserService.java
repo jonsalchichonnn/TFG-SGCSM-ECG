@@ -2,6 +2,7 @@ package com.sgcsm_ecg.service;
 
 import com.sgcsm_ecg.common.HttpResponse;
 import com.sgcsm_ecg.common.UserDTO;
+import com.sgcsm_ecg.entity.Pass;
 import com.sgcsm_ecg.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -25,4 +26,8 @@ public interface UserService extends IService<User> {
     HttpResponse<?> updateUser(int id, User user);
 
     HttpResponse<?> deleteUser(int id);
+
+    HttpResponse<User> getUserById(int id);
+
+    HttpResponse<?> updateUserPass(int id, Pass pass);
 }

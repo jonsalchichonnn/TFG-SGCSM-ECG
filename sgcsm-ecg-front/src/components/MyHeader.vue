@@ -42,12 +42,12 @@ export default {
   name: "MyHeader",
   data() {
     return {
-      curUser: JSON.parse(sessionStorage.getItem("currentUser"))
+      // curUser: JSON.parse(sessionStorage.getItem("currentUser"))
     }
   },
   methods: {
     toProfile() {
-      alert("toProfile");
+      this.$router.push("/profile");
     },
     logout() {
       console.log("logout!!!");
@@ -74,5 +74,10 @@ export default {
       this.$store.commit("changeCollapse");
     },
   },
+  computed:{
+    curUser(){
+      return this.$store.state.currentUser.user
+    }
+  }
 };
 </script>

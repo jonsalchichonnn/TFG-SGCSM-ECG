@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sgcsm_ecg.entity.Device;
 import com.sgcsm_ecg.entity.DeviceDTO;
 import com.sgcsm_ecg.service.DeviceService;
+import com.sgcsm_ecg.service.LogService;
 
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
@@ -25,23 +26,22 @@ public class ClientHandler implements Runnable {
         return SpringContext.getBean(DeviceService.class);
     }
 
+    private LogService getLogService() {
+        return SpringContext.getBean(LogService.class);
+    }
+
     @Override
     public void run() {
         try {
-////            BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-////            String line = null;
-////            while ((line = in.readLine()) != null) {
-////                // Process the input from the client
-////            }
-//            in.close();
             SSLSession session = clientSocket.getSession();
 
             // Supported cipher
             String cipher = session.getCipherSuite();
 
+            System.err.println("============== NEW CLIENT CONNECTED ============== ");
             System.err.println("Peer: " + clientSocket.getRemoteSocketAddress());
             System.err.println("Host: " + session.getPeerHost());
-            System.err.println("CIPHER SUITES AGREMENTED: " + cipher);
+            System.err.println("CIPHER SUITES: " + cipher);
 
             OutputStream sslOs = clientSocket.getOutputStream();
             InputStream sslIs = clientSocket.getInputStream();
@@ -56,21 +56,16 @@ public class ClientHandler implements Runnable {
             DeviceDTO deviceDTO = objectMapper.readValue(sslRecvMsg, DeviceDTO.class);
 
             Device device = new Device(deviceDTO.getId(), sslRecvMsg);
-//            deviceService = getDeviceService();
-//            deviceService.saveOrUpdate(device);
+
             getDeviceService().saveOrUpdate(device);
-
-
-//            String fechaactual = new Date().toString();
-//				String serverEchoResponse = "     >>>ACK(" + fechaactual + ")";
+            getLogService().saveDevLog(deviceDTO, session.getPeerHost());
 
             // Thread.currentThread().sleep(10000);
             // 10 segundos
             String deviceJSON = objectMapper.writeValueAsString(deviceDTO);
-            System.err.println(deviceJSON);
+            System.err.println("***************** Server Received: " + deviceJSON);
             sslOutput.writeUTF(deviceJSON);
-//            sslOutput.writeUTF("<<<<<<<<<<<<<<<<<<<<<<<<<RESPONSE MESSAGE FROM SERVER");
-//            System.err.println(sslRecvMsg);
+
             clientSocket.close();
         } catch (Exception e) {
             e.printStackTrace();

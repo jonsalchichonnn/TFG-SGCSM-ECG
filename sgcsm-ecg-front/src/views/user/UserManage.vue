@@ -35,7 +35,7 @@
     </div>
     <el-table
         :data="tableData"
-        :header-cell-style="{ background: '#f2f5fc', color: '#555555' }"
+        :header-cell-style="{ background: '#A9A9A9', color: '#fff' }"
         border
         v-loading="loading"
         element-loading-text="Loading..."
@@ -83,16 +83,10 @@
       </el-table-column>
       <el-table-column prop="operate" label="Action">
         <template slot-scope="scope">
-          <el-button size="small" type="success" icon="el-icon-edit" @click="handleUpdate(scope.row)" round>Modify</el-button>
-          <el-button size="small" type="danger" icon="el-icon-delete" @click="handleDelete(scope.row.id)" round>Delete</el-button>
-
-          <!--          <el-popconfirm-->
-          <!--              title="Are you sure?"-->
-          <!--              @confirm="deleteUser(scope.row.id)"-->
-          <!--              style="margin-left: 5px;"-->
-          <!--          >-->
-          <!--            <el-button slot="reference" size="small" type="danger">Delete</el-button>-->
-          <!--          </el-popconfirm>-->
+          <el-button size="small" type="success" icon="el-icon-edit" @click="handleUpdate(scope.row)" round>Modify
+          </el-button>
+          <el-button size="small" type="danger" icon="el-icon-delete" @click="handleDelete(scope.row.id)" round>Delete
+          </el-button>
         </template>
       </el-table-column>
     </el-table>

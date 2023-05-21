@@ -16,15 +16,12 @@
         <el-button type="success" size="medium" icon="el-icon-refresh" @click="resetParam">Reset</el-button>
       </div>
       <div class="import-export">
-        <el-button type="success" @click="exportData"><i class="el-icon-download"></i>&nbsp; Export Data
+        <el-button type="warning" @click="exportData"><i class="el-icon-download"></i>&nbsp; Export Data
         </el-button>
       </div>
     </div>
     <div class="device-container"
-         v-loading="loading"
-         element-loading-text="Loading..."
-         element-loading-spinner="el-icon-loading"
-         element-loading-background="rgba(0, 0, 0, 0.8)">
+         v-loading="loading">
       <el-card class="device-card" v-for="(device,index) in devices" :key="index" shadow="always">
         <div slot="header" class="clearfix">
           <div class="device-info-tab">

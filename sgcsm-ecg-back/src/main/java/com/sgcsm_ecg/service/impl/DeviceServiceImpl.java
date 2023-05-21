@@ -29,28 +29,24 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
     @Override
     public HttpResponse<?> getDevices(Integer pageNum, Integer pageSize, String id) {
-        LambdaQueryWrapper<Device> lambdaQueryWrapper = new LambdaQueryWrapper<>();
-        lambdaQueryWrapper.like(StringUtils.isNotBlank(id),
-                Device::getId, id);
-        Page<Device> p = new Page<>(pageNum, pageSize);
-        page(p, lambdaQueryWrapper);
+        List<DeviceDTO> result;
+        long total;
+        if(pageNum == null && pageSize == null && id == null){
+            result = getAllDevices();
+            total = (long) result.size();
+//            return HttpResponse.success(result, (long) result.size());
+        }else{
+            LambdaQueryWrapper<Device> lambdaQueryWrapper = new LambdaQueryWrapper<>();
+            lambdaQueryWrapper.like(StringUtils.isNotBlank(id),
+                    Device::getId, id);
+            Page<Device> p = new Page<>(pageNum, pageSize);
+            page(p, lambdaQueryWrapper);
 
-        // HACE FALTA CONVERTIR JSON A OBJETOS Y MANDARLOS?
-//        List<DeviceDTO> result = new ArrayList<>();
-//        for (Device d : p.getRecords()) {
-//            // Convert JSON to Object
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            try {
-//                DeviceDTO deviceDTO = objectMapper.readValue(d.getProperties(), DeviceDTO.class);
-//                result.add(deviceDTO);
-//            } catch (JsonProcessingException e) {
-//                e.printStackTrace();
-//            }
-//        }
-        List<DeviceDTO> result = toDTOList(p.getRecords());
-        return HttpResponse.success(result, p.getTotal());
-//        List<Device> menus = lambdaQuery().like(Device::getId, id).list();
-//        return HttpResponse.success(menus);
+            result = toDTOList(p.getRecords());
+            total = p.getTotal();
+//            return HttpResponse.success(result, p.getTotal());
+        }
+        return HttpResponse.success(result, total);
     }
 
     @Override

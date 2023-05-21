@@ -53,18 +53,22 @@ export default {
   data() {
 
     return {
-      user: {}
+      // user: {}
     }
   },
-  computed: {},
   methods: {
-    init() {
-      this.user = JSON.parse(sessionStorage.getItem('currentUser'))
-    }
+    // init() {
+    //   this.user = JSON.parse(sessionStorage.getItem('currentUser'))
+    // }
   },
-  created() {
-    this.init()
+  computed:{
+    user(){
+      return this.$store.state.currentUser.user
+    }
   }
+  // created() {
+  //   this.init()
+  // }
 }
 </script>
 

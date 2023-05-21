@@ -1,7 +1,7 @@
 import VueRouter from "vue-router";
 import Login from "@/views/Login";
 import Home from "@/components/HomePage";
-// import Welcome from "@/views/Welcome";
+import Profile from "@/views/ProfileView";
 
 const defaultRoutes = [
     {
@@ -15,14 +15,11 @@ const defaultRoutes = [
         component: Home,
         redirect: 'welcome',
         children: [
-            //     {
-            //         path: '/',
-            //         name: 'welcome',
-            //         meta: {
-            //             title: 'Welcome'
-            //         },
-            //         component: Welcome
-            //     },
+            {
+                path: "/profile",
+                name: "profile",
+                component: Profile,
+            },
         ]
     }]
 const router = new VueRouter({

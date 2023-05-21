@@ -16,7 +16,7 @@
       <span slot="title">Home</span>
     </el-menu-item>
 
-    <el-menu-item :index="item.path" v-for="(item,i) in routes[1].children" :key="i" v-show="item.path !== '/welcome'">
+    <el-menu-item :index="item.path" v-for="(item,i) in routes[1].children" :key="i" v-show="item.path !== '/welcome' && item.path !== '/profile'">
       <i :class="item.icon" style="margin-right: 8px"></i>
       <span slot="title">{{ item.name }}</span>
     </el-menu-item>

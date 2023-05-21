@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sgcsm_ecg.common.HttpResponse;
 import com.sgcsm_ecg.common.UserDTO;
+import com.sgcsm_ecg.entity.Pass;
 import com.sgcsm_ecg.entity.User;
 import com.sgcsm_ecg.mapper.UserMapper;
 import com.sgcsm_ecg.service.UserService;
@@ -98,5 +99,23 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
         removeById(id);
         return HttpResponse.success();
+    }
+
+    @Override
+    public HttpResponse<User> getUserById(int id) {
+        User u = getById(id);
+        return HttpResponse.success(u);
+    }
+
+    @Override
+    public HttpResponse<?> updateUserPass(int id, Pass pass) {
+        User u = getById(id);
+        String oldPass = getById(id).getPassword();
+        if (oldPass.equals(pass.getOldPass())) {
+            u.setPassword(pass.getPass());
+            updateById(u);
+            return HttpResponse.success();
+        }
+        return HttpResponse.fail("Incorrect old password");
     }
 }

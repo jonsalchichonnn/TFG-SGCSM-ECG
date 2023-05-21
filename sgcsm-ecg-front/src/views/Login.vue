@@ -57,7 +57,7 @@
   background-size: cover;
   background-origin: border-box;
   border: none;
-  border-radius: 0px;
+  border-radius: 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -65,7 +65,7 @@
 
 .login_form {
   width: 510px;
-  margin: 0px auto;
+  margin: 0 auto;
   padding: 0 55px 15px 35px;
   background-color: #fff;
   border: none;
@@ -129,6 +129,7 @@ export default {
             if (res.code === 200) {
               // store current user data
               sessionStorage.setItem("currentUser", JSON.stringify(res.data))
+              this.$store.commit("initUser", res.data)
 
               // console.log(res.data.menu)
               // this.$store.commit("setMenu", res.data.menu)
