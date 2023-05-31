@@ -85,14 +85,6 @@
         <template slot-scope="scope">
           <el-button size="small" type="success" @click="handleUpdate(scope.row)">Modify</el-button>
           <el-button size="small" type="danger" @click="handleDelete(scope.row.id)">Delete</el-button>
-
-          <!--          <el-popconfirm-->
-          <!--              title="Are you sure?"-->
-          <!--              @confirm="deleteUser(scope.row.id)"-->
-          <!--              style="margin-left: 5px;"-->
-          <!--          >-->
-          <!--            <el-button slot="reference" size="small" type="danger">Delete</el-button>-->
-          <!--          </el-popconfirm>-->
         </template>
       </el-table-column>
     </el-table>
@@ -331,7 +323,7 @@ export default {
             } else {
               this.$message.error(res.msg);
             }
-          }); // ADD EXCEPTION CONTROL (码歌?)
+          }); // ADD EXCEPTION CONTROL (?)
     },
     resetParam() {
       this.name = "";

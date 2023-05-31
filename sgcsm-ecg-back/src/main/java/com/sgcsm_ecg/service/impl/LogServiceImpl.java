@@ -16,7 +16,7 @@ import java.util.List;
 
 /**
  * <p>
- * 服务实现类
+ * Log Service Implementation
  * </p>
  *
  * @author sgcsm

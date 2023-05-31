@@ -106,105 +106,11 @@ export default {
             } else {
               this.$message.error(res.msg);
             }
-          }); // ADD EXCEPTION CONTROL (码歌?)
+          }); // ADD EXCEPTION CONTROL (?)
     },
     resetParam() {
       this.deviceId = "";
     },
-    // resetForm() {
-    //   this.$refs.addForm.resetFields();
-    //   this.addForm.id = ""
-    // },
-    // popDialog() {
-    //   this.showDialog(true);
-    //   this.$nextTick(() => {
-    //     this.resetForm();
-    //   });
-    // },
-    // saveUpdate() {
-    //   this.$refs.addForm.validate((valid) => {
-    //     if (valid) {
-    //       if (this.addForm.id) {
-    //         this.updateDepartment(); // MODIFYING
-    //       } else {
-    //         this.saveDepartment();
-    //       }
-    //     } else {
-    //       this.$message.error("Error on submit!!");
-    //       return false;
-    //     }
-    //   });
-    // },
-    // saveDepartment() {
-    //   this.$axios
-    //       .post("/departments", this.addForm)
-    //       .then((res) => res.data)
-    //       .then((res) => {
-    //         console.log(res);
-    //         if (res.code === 201) {
-    //           this.$message.success('Department created successfully!');
-    //           this.showDialog(false);
-    //           this.getLogs();
-    //           this.resetForm();
-    //         } else {
-    //           this.$message.error(res.msg)
-    //         }
-    //       });
-    // },
-    // updateDepartment() {
-    //   this.$axios
-    //       .put(`/departments/${this.addForm.id}`, this.addForm)
-    //       .then((res) => res.data)
-    //       .then((res) => {
-    //         console.log(res);
-    //         if (res.code === 200) {
-    //           this.$message.success('Department modified successfully!');
-    //           this.showDialog(false);
-    //           this.disableEdit = false
-    //           this.getLogs();
-    //           this.resetForm();
-    //         } else {
-    //           this.$message.error(res.msg);
-    //         }
-    //       });
-    // },
-    // handleUpdate(row) {
-    //   this.showDialog(true)
-    //   this.disableEdit = true
-    //   // mejor hacer un getById al backend para obtener siempre la info actualizada
-    //   this.$nextTick(() => {
-    //     //get row value
-    //     this.addForm.id = row.id
-    //     this.addForm.name = row.name
-    //     this.addForm.comment = row.comment
-    //   })
-    // },
-    // handleDelete(id) {
-    //   this.$confirm('This department will be permanently deleted', 'Do you want to delete?', {
-    //     confirmButtonText: 'Delete',
-    //     cancelButtonText: 'Cancel',
-    //     type: 'warning',
-    //     center: true
-    //   }).then(() => {
-    //     this.deleteDepartment(id)
-    //   }).catch(() => {
-    //     this.$message.info('Department delete cancelled');
-    //   });
-    // },
-    // deleteDepartment(id) {
-    //   console.log(`Deleting user w id = ${id}`)
-    //
-    //   this.$axios.delete(`/departments/${id}`).then(res => res.data).then(res => {
-    //     console.log(res)
-    //     if (res.code === 200) {
-    //       this.$message.success('Department deleted successfully');
-    //       this.getLogs()
-    //     } else {
-    //       this.$message.error('Error on delete...');
-    //     }
-    //
-    //   })
-    // },
     search() {
       this.pageNum = 1;
       this.getLogs();

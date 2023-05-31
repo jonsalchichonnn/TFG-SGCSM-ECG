@@ -19,7 +19,6 @@
       </el-header>
 
       <el-main style="height: 100%; background-color: lavender"> <!-- linen lavender #EFF2F3 -->
-        <!--        <MyMain></MyMain>-->
         <router-view/>
       </el-main>
     </el-container>
@@ -46,7 +45,6 @@
 <script>
 import MyAside from "./MyAside.vue";
 import MyHeader from "./MyHeader.vue";
-// import MyMain from "./MyMain.vue";
 
 export default {
   name: "HomePage",

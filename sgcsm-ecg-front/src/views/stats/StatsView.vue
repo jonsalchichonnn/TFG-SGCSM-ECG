@@ -2,11 +2,10 @@
   <div>
     <div ref="barChart" id="barChart" style="height: 300px"></div>
     <div ref="vertBarChart" id="vertBarChart" style="height: 300px"></div>
-    <div ref="pieChart" id="pieChart" style="height: 300px"></div>
+    <div ref="pieChart" id="pieChart" style="height: 300px; margin-top: 32px"></div>
     <div ref="halfDonutChart" id="halfDonutChart" style="height: 300px"></div>
     <div ref="lineChart" id="lineChart" style="height: 300px"></div>
     <el-backtop :bottom="60"></el-backtop>
-<!--    <el-backtop target=".page-component__scroll .el-scrollbar__wrap"></el-backtop>-->
   </div>
 </template>
 
@@ -19,11 +18,9 @@ export default {
   data() {
     return {
       devices: [],
-      // osMap: new Map(),
       osKeys: [],
       osValues: [],
       osPieData: [],
-      // brandMap: new Map(),
       brandPieData: [],
       pixelKeys: [],
       pixelValues: [],
@@ -74,9 +71,8 @@ export default {
 
       this.brandPieData = Array.from(brandMap, ([name, value]) => ({value, name}));
       let brandValues = Array.from(brandMap.values());
-      // const sum = brandValues.reduce((partialSum, a) => partialSum + a, 0);
       const fillingRecord = {
-        // make an record to fill the bottom 50%
+        // make a record to fill the bottom 50%
         value: brandValues.reduce((partialSum, a) => partialSum + a, 0), // brandMap values sum
         itemStyle: {
           // stop the chart from rendering this piece
@@ -93,8 +89,6 @@ export default {
       console.log("brandPieData", this.brandPieData)
     },
     initCameraData(devList) {
-      // count brand freq in map
-      // let pixelMap = new Map();
       devList.forEach(dev => {
         this.pixelKeys.push(dev.id);
         this.pixelValues.push(dev.frontResolution.slice(0, -3));
@@ -104,8 +98,6 @@ export default {
 
     },
     initSensorData(devList) {
-      // count brand freq in map
-      // let pixelMap = new Map();
       devList.forEach(dev => {
         this.sensorKeys.push(dev.id);
         this.sensorValues.push(dev.sensors.length);
@@ -114,8 +106,6 @@ export default {
       console.log("this.sensorValues", this.sensorValues)
     },
     initMemData(devList) {
-      // count brand freq in map
-      // let pixelMap = new Map();
       devList.forEach(dev => {
         this.memKeys.push(dev.id);
         this.memValues.push(this.round(dev.usedMemPct));
@@ -135,17 +125,6 @@ export default {
               console.log(res.data)
               this.devices = res.data; // getData from HttpResponse wrapper
               this.total = res.total;
-              // count os stats
-              console.log("this.devices", this.devices)
-              // this.devices.forEach(dev => {
-              //   let key = "Android " + dev.os
-              //   let freq = this.osMap.get(key)
-              //   if (freq == null)
-              //     this.osMap.set(key, 1)
-              //   else
-              //     this.osMap.set(key, freq + 1)
-              // })
-
 
               this.initCameraData(this.devices);
               this.initSensorData(this.devices);
@@ -278,7 +257,7 @@ export default {
               var pieOption = {
                 // backgroundColor: '#2c343c',
                 title: {
-                  text: "Pie Chart",//graph title
+                  text: "Operating System",//graph title
                   left: "center"
                 },
                 tooltip: {
@@ -387,19 +366,12 @@ export default {
             } else {
               this.$message.error(res.msg);
             }
-          }); // ADD EXCEPTION CONTROL (码歌?)
+          }); // ADD EXCEPTION CONTROL (?)
     },
     initChartsInfo() {
       this.getDevices();
-
-      // this.$nextTick(()=>{
-      //
-      // });
     }
   },
-  // beforeMount() {
-  //   this.getDevices();
-  // },
   mounted() {
     this.initChartsInfo();
   }

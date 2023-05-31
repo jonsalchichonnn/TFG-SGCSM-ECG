@@ -4,7 +4,6 @@ export default{
     },
     mutations:{
         changeCollapse(state){
-            // console.log("state: ", state.isCollpase)
             state.isCollapse = !state.isCollapse
         }
     }

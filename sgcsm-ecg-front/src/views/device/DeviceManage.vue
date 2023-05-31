@@ -26,7 +26,6 @@
         <div slot="header" class="clearfix">
           <div class="device-info-tab">
             <div style="margin-bottom:5px;margin-top:5px;margin-right: 8px;">{{ device.id }}</div>
-            <!-- crear funcion para poner ruta dinámica en :src -->
             <div><img :src="img_src(device.brand)" :alt="device.id" :title="device.id" class="device-img"></div>
           </div>
         </div>
@@ -42,7 +41,7 @@
             center
         >
           <div class="device-info-container">
-            <el-collapse v-model="activeName" accordion> <!-- @change="change" -->
+            <el-collapse v-model="activeName" accordion>
               <el-collapse-item title="System" name="1">
                 <div>Brand：{{ dialogDev.brand }}</div>
                 <div>Model：{{ dialogDev.model }}</div>
@@ -101,7 +100,7 @@
               </el-collapse-item>
 
               <el-collapse-item title="Network" name="5">
-                <div>Status：{{ dialogDev.status }}</div> <!-- ambos -->
+                <div>Status：{{ dialogDev.status }}</div>
                 <div v-show="dialogDev.ssid">SSID：{{ dialogDev.ssid }}</div>
                 <div v-show="dialogDev.bssid">BSSID：{{ dialogDev.bssid }}</div>
                 <div v-show="dialogDev.wifiStrength">Signal：{{ dialogDev.wifiStrength }}</div>
@@ -113,7 +112,7 @@
                   Speed：{{ dialogDev.downSpeed }} / {{ dialogDev.upSpeed }} Mbps
                 </div>
 
-                <div v-show="dialogDev.ip">IP Address：{{ dialogDev.ip }}</div><!-- wifi -->
+                <div v-show="dialogDev.ip">IP Address：{{ dialogDev.ip }}</div>
                 <div v-show="dialogDev.realmac">MAC Address：{{ dialogDev.realmac }}</div>
                 <div v-show="dialogDev.gateway">Gateway：{{ dialogDev.gateway }}</div>
                 <div v-show="dialogDev.netmask">Netmask：{{ dialogDev.netmask }}</div>
@@ -180,11 +179,6 @@
 </template>
 
 <style>
-/*.el-header {*/
-/*  background-color: #b3c0d1;*/
-/*  color: #333;*/
-/*  line-height: 60px;*/
-/*}*/
 .h4-custom {
   color: #2552E4;
   border-bottom: lightgrey solid
@@ -254,7 +248,6 @@ export default {
       loading: false,
       disableEdit: false,
       centerDialogVisible: false,
-      // tableData: [],
       devices: [],
       activeName: -1, // el-collapse -> closed by default
       detailCollapse: -1,
@@ -292,7 +285,6 @@ export default {
         src = this.huaweiSrc;
       } else if (lowerBrand === "realme")
         src = this.realmeSrc;
-      // return `'../../assets/${path}'`
       return src
     },
     showDialog(show) {
@@ -330,7 +322,7 @@ export default {
             } else {
               this.$message.error(res.msg);
             }
-          }); // ADD EXCEPTION CONTROL (码歌?)
+          }); // ADD EXCEPTION CONTROL (?)
     },
     resetParam() {
       this.deviceId = "";
@@ -342,97 +334,10 @@ export default {
     popDialog(device) {
       this.showDialog(true);
       this.dialogDev = device
-      // this.$nextTick(() => {
-      //   this.resetForm();
-      // });
     },
     exportData() {
       this.downloadRequest('/devices/export');
     },
-    // saveUpdate() {
-    //   this.$refs.addForm.validate((valid) => {
-    //     if (valid) {
-    //       if (this.addForm.id) {
-    //         this.updateDepartment(); // MODIFYING
-    //       } else {
-    //         this.saveDepartment();
-    //       }
-    //     } else {
-    //       this.$message.error("Error on submit!!");
-    //       return false;
-    //     }
-    //   });
-    // },
-    // saveDepartment() {
-    //   this.$axios
-    //       .post("/departments", this.addForm)
-    //       .then((res) => res.data)
-    //       .then((res) => {
-    //         console.log(res);
-    //         if (res.code === 201) {
-    //           this.$message.success('Department created successfully!');
-    //           this.showDialog(false);
-    //           this.getDevices();
-    //           this.resetForm();
-    //         } else {
-    //           this.$message.error(res.msg)
-    //         }
-    //       });
-    // },
-    // updateDepartment() {
-    //   this.$axios
-    //       .put(`/departments/${this.addForm.id}`, this.addForm)
-    //       .then((res) => res.data)
-    //       .then((res) => {
-    //         console.log(res);
-    //         if (res.code === 200) {
-    //           this.$message.success('Department modified successfully!');
-    //           this.showDialog(false);
-    //           this.disableEdit = false
-    //           this.getDevices();
-    //           this.resetForm();
-    //         } else {
-    //           this.$message.error(res.msg);
-    //         }
-    //       });
-    // },
-    // handleUpdate(row) {
-    //   this.showDialog(true)
-    //   this.disableEdit = true
-    //   // mejor hacer un getById al backend para obtener siempre la info actualizada
-    //   this.$nextTick(() => {
-    //     //get row value
-    //     this.addForm.id = row.id
-    //     this.addForm.name = row.name
-    //     this.addForm.comment = row.comment
-    //   })
-    // },
-    // handleDelete(id) {
-    //   this.$confirm('This department will be permanently deleted', 'Do you want to delete?', {
-    //     confirmButtonText: 'Delete',
-    //     cancelButtonText: 'Cancel',
-    //     type: 'warning',
-    //     center: true
-    //   }).then(() => {
-    //     this.deleteDepartment(id)
-    //   }).catch(() => {
-    //     this.$message.info('Department delete cancelled');
-    //   });
-    // },
-    // deleteDepartment(id) {
-    //   console.log(`Deleting user w id = ${id}`)
-    //
-    //   this.$axios.delete(`/departments/${id}`).then(res => res.data).then(res => {
-    //     console.log(res)
-    //     if (res.code === 200) {
-    //       this.$message.success('Department deleted successfully');
-    //       this.getDevices()
-    //     } else {
-    //       this.$message.error('Error on delete...');
-    //     }
-    //
-    //   })
-    // },
     search() {
       this.pageNum = 1;
       this.getDevices();

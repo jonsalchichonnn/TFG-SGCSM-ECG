@@ -18,7 +18,7 @@ import java.util.List;
 
 /**
  * <p>
- * 服务实现类
+ * Device Service Implementation
  * </p>
  *
  * @author sgcsm
@@ -33,8 +33,7 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
         long total;
         if(pageNum == null && pageSize == null && id == null){
             result = getAllDevices();
-            total = (long) result.size();
-//            return HttpResponse.success(result, (long) result.size());
+            total = result.size();
         }else{
             LambdaQueryWrapper<Device> lambdaQueryWrapper = new LambdaQueryWrapper<>();
             lambdaQueryWrapper.like(StringUtils.isNotBlank(id),
@@ -44,7 +43,6 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
 
             result = toDTOList(p.getRecords());
             total = p.getTotal();
-//            return HttpResponse.success(result, p.getTotal());
         }
         return HttpResponse.success(result, total);
     }
@@ -53,18 +51,6 @@ public class DeviceServiceImpl extends ServiceImpl<DeviceMapper, Device> impleme
     public List<DeviceDTO> getAllDevices() {
         List<Device> devList = list();
         return toDTOList(devList);
-//        List<DeviceDTO> dtoList = new ArrayList<>(devList.size());
-//        for(Device d : devList){
-//            // Convert JSON to Object
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            try {
-//                DeviceDTO deviceDTO = objectMapper.readValue(d.getProperties(), DeviceDTO.class);
-//                dtoList.add(deviceDTO);
-//            } catch (JsonProcessingException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//        return dtoList;
     }
 
     private List<DeviceDTO> toDTOList(List<Device> devList){

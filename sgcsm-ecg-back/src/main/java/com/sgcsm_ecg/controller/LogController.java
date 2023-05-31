@@ -47,9 +47,8 @@ public class LogController {
         Workbook workbook = ExcelExportUtil.exportExcel(params, Log.class, logList);
         ServletOutputStream out = null;
         try {
-            // 流形式导出
+            // export as a stream
             response.setHeader("content-type", "application/octet-stream");
-            // 防止中文乱码
             response.setHeader("content-disposition", "attachment;filename=Logs.xls");
             out = response.getOutputStream();
             workbook.write(out);

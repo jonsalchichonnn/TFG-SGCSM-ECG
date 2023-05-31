@@ -5,7 +5,6 @@ import cn.afterturn.easypoi.excel.ExcelExportUtil;
 import cn.afterturn.easypoi.excel.entity.ExportParams;
 import cn.afterturn.easypoi.excel.entity.enmus.ExcelType;
 import com.sgcsm_ecg.common.HttpResponse;
-import com.sgcsm_ecg.entity.Device;
 import com.sgcsm_ecg.entity.DeviceDTO;
 import com.sgcsm_ecg.service.DeviceService;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,7 +22,7 @@ import java.util.List;
 
 /**
  * <p>
- *  前端控制器
+ *  Device controller
  * </p>
  *
  * @author sgcsm
@@ -49,9 +48,8 @@ public class DeviceController {
         Workbook workbook = ExcelExportUtil.exportExcel(params, DeviceDTO.class, dtoList);
         ServletOutputStream out = null;
         try {
-            // 流形式导出
+            // export as a stream
             response.setHeader("content-type", "application/octet-stream");
-            // 防止中文乱码
             response.setHeader("content-disposition", "attachment;filename=Devices.xls");
             out = response.getOutputStream();
             workbook.write(out);

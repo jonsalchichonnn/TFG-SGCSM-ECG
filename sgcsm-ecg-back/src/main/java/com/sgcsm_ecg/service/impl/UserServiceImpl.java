@@ -41,8 +41,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             Page<User> p = new Page<>(pageNum, pageSize);
             page(p, lambdaQueryWrapper);
             return HttpResponse.success(p.getRecords(), p.getTotal());
-//            records = p.getRecords();
-//            return HttpResponse.success(records, (long) records.size());
         }
 
     }
@@ -74,8 +72,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             Page<User> p = new Page<>(dto.getPageNum(), dto.getPageSize());
             page(p, lambdaQueryWrapper);
             return HttpResponse.success(p.getRecords(), p.getTotal());
-//            records = p.getRecords();
-//            return HttpResponse.success(records, (long) records.size());
         }
     }
 
@@ -96,7 +92,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public HttpResponse<?> deleteUser(int id) {
-
         removeById(id);
         return HttpResponse.success();
     }

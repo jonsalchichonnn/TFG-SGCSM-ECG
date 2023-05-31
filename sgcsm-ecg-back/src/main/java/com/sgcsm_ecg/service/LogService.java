@@ -9,7 +9,7 @@ import java.util.List;
 
 /**
  * <p>
- * 服务类
+ * Log Service
  * </p>
  *
  * @author sgcsm

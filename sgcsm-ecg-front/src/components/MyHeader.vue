@@ -28,12 +28,6 @@ i {
   color: #333;
 }
 
-/* .el-icon-s-fold {
-  font-size: 20px;
-} */
-/* .el-icon-caret-bottom {
-  font-size: 14px;
-} */
 </style>
 
 <script>
@@ -42,7 +36,6 @@ export default {
   name: "MyHeader",
   data() {
     return {
-      // curUser: JSON.parse(sessionStorage.getItem("currentUser"))
     }
   },
   methods: {
@@ -53,7 +46,7 @@ export default {
       console.log("logout!!!");
 
       this.$confirm('Current session will be closed', 'Do you want to log out?', {
-        confirmButtonText: 'Log out',  //确认按钮的文字显示
+        confirmButtonText: 'Log out',
         cancelButtonText: 'Cancel',
         type: 'warning',
         center: true // center text

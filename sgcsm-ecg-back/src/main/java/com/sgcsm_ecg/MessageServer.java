@@ -15,6 +15,7 @@ public class MessageServer implements Runnable {
     private SSLServerSocket serverSocket;
 
     public MessageServer(int port, String keystoreName, String keystorePassword, String truststoreName, String truststorePassword) throws Exception {
+        // build keyStore
         Resource res = new ClassPathResource(keystoreName);
         KeyStore keystore = KeyStore.getInstance("PKCS12");
         keystore.load(new FileInputStream(res.getFile()), keystorePassword.toCharArray());
@@ -40,7 +41,7 @@ public class MessageServer implements Runnable {
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
         keyManagerFactory.init(keystore, keystorePassword.toCharArray());
 
-
+        // build trustStore
         KeyStore truststore = KeyStore.getInstance(KeyStore.getDefaultType());
         truststore.load(null , truststorePassword.toCharArray()); //new FileInputStream(truststorePath)
 
@@ -66,7 +67,6 @@ public class MessageServer implements Runnable {
         System.out.println("\tALGORITMOS: " + ((X509Certificate) chain[0]).getSigAlgName());
 
 
-
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance("SunX509");
         trustManagerFactory.init(truststore);
 
@@ -77,11 +77,6 @@ public class MessageServer implements Runnable {
 
         this.serverSocket = (SSLServerSocket) sslServerSocketFactory.createServerSocket(port);
         this.serverSocket.setNeedClientAuth(true);
-//        this.serverSocket.setEnabledCipherSuites(this.serverSocket.getSupportedCipherSuites());
-//        this.serverSocket.setEnabledProtocols(this.serverSocket.getSupportedProtocols());
-//        this.serverSocket.setUseClientMode(false);
-//        this.serverSocket.setEnableSessionCreation(true);
-//        this.serverSocket.setSSLParameters(sslContext.getDefaultSSLParameters());
     }
 
     @Override

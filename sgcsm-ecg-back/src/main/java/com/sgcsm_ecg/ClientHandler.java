@@ -12,6 +12,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.time.LocalDateTime;
 
 public class ClientHandler implements Runnable {
 
@@ -60,11 +61,14 @@ public class ClientHandler implements Runnable {
             getDeviceService().saveOrUpdate(device);
             getLogService().saveDevLog(deviceDTO, session.getPeerHost());
 
-            // Thread.currentThread().sleep(10000);
-            // 10 segundos
             String deviceJSON = objectMapper.writeValueAsString(deviceDTO);
-            System.err.println("***************** Server Received: " + deviceJSON);
-            sslOutput.writeUTF(deviceJSON);
+            System.err.println("***************** Server Received message at " + LocalDateTime.now() + " : " + deviceJSON);
+
+            // concurrency test only
+//            System.err.println("Hi " + sslRecvMsg + " sleeping for 15 seconds");
+//            Thread.currentThread().sleep(15000);// 10 segundos
+//            System.err.println("Just woke up! Answering to " + sslRecvMsg);
+            sslOutput.writeUTF("SR: Datos recibidos correctamente.");
 
             clientSocket.close();
         } catch (Exception e) {

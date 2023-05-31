@@ -18,7 +18,7 @@ public class CodeGenerator {
 
     /**
      * <p>
-     * 读取控制台内容
+     * read from console
      * </p>
      */
     public static String scanner(String tip) {
@@ -45,7 +45,7 @@ public class CodeGenerator {
         gc.setOutputDir(projectPath + "/src/main/java");
         gc.setAuthor("sgcsm");
         gc.setOpen(false);
-        gc.setSwagger2(true); // 实体属性 Swagger2 注解
+        gc.setSwagger2(true); // Swagger2 annotation
         gc.setBaseResultMap(true); // XML ResultMap
         gc.setBaseColumnList(true); // XML ColumnList
         gc.setServiceName("%sService");
@@ -90,53 +90,30 @@ public class CodeGenerator {
         focList.add(new FileOutConfig(templatePath) {
             @Override
             public String outputFile(TableInfo tableInfo) {
-                // 自定义输出文件名 ， 如果你 Entity 设置了前后缀、此处注意 xml 的名称会跟着发生变化！！
+                // Customize output file name, if set prefix and suffix for Entity, note the name of xml will change!
                 return projectPath + "/src/main/resources/mapper/" + pc.getModuleName()
                         + "/" + tableInfo.getEntityName() + "Mapper" + StringPool.DOT_XML;
             }
         });
-        /*
-        cfg.setFileCreate(new IFileCreate() {
-            @Override
-            public boolean isCreate(ConfigBuilder configBuilder, FileType fileType, String filePath) {
-                // 判断自定义文件夹是否需要创建
-                checkDir("调用默认方法创建的目录，自定义目录用");
-                if (fileType == FileType.MAPPER) {
-                    // 已经生成 mapper 文件判断存在，不想重新生成返回 false
-                    return !new File(filePath).exists();
-                }
-                // 允许生成模板文件
-                return true;
-            }
-        });
-        */
+
         cfg.setFileOutConfigList(focList);
         mpg.setCfg(cfg);
 
         // TemplateConfig
         TemplateConfig templateConfig = new TemplateConfig();
-
-        // 配置自定义输出模板
-        //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
-        // templateConfig.setEntity("templates/entity2.java");
-        // templateConfig.setService();
-        // templateConfig.setController();
-
         templateConfig.setXml(null);
         mpg.setTemplate(templateConfig);
 
-        // 策略配置
+        // strategy config
         StrategyConfig strategy = new StrategyConfig();
         strategy.setNaming(NamingStrategy.underline_to_camel);
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
-//        strategy.setSuperEntityClass("你自己的父类实体,没有就不用设置!");
+//        strategy.setSuperEntityClass("SuperEntity, not mandatory!");
 //        strategy.setSuperEntityClass("BaseEntity");
         strategy.setEntityLombokModel(true);
         strategy.setRestControllerStyle(true);
-        // 公共父类
-//        strategy.setSuperControllerClass("你自己的父类控制器,没有就不用设置!");
+//        strategy.setSuperControllerClass("SuperController, not mandatory!");
 //        strategy.setSuperControllerClass("BaseController");
-        // 写于父类中的公共字段
 //        strategy.setSuperEntityColumns("id");
         strategy.setInclude(scanner("Table name, if various separated with comma").split(","));
         strategy.setControllerMappingHyphenStyle(true);

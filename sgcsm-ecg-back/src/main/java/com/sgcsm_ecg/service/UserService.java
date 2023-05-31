@@ -18,7 +18,6 @@ import java.util.List;
  */
 public interface UserService extends IService<User> {
 
-//    HttpResponse<List<User>> getUsers(Integer pageNum, Integer pageSize, String name, Integer sex);
     HttpResponse<List<User>> getUsers(UserDTO userDTO);
 
     HttpResponse<?> createUser(User user);

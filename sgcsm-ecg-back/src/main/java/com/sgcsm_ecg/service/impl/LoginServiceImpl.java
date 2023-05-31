@@ -15,12 +15,6 @@ public class LoginServiceImpl implements LoginService {
 
     @Override
     public HttpResponse<?> login(User user) {
-
-//        User result = userMapper.selectOne(new LambdaQueryWrapper<User>()
-//                .select(User::getId)
-//                .eq(User::getAccount, user.getAccount())
-//                .eq(User::getPassword, user.getPassword()));
-
         System.err.println("user.getAccount() = " + user.getAccount() + " user.getPassword()= " + user.getPassword());
         User result = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .eq(User::getAccount, user.getAccount())

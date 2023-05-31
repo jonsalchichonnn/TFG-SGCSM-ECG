@@ -14,7 +14,7 @@ import java.util.List;
 
 /**
  * <p>
- * 服务实现类
+ * Department Service Implementation
  * </p>
  *
  * @author sgcsm
@@ -34,6 +34,7 @@ public class DepartmentServiceImpl extends ServiceImpl<DepartmentMapper, Departm
             LambdaQueryWrapper<Department> lambdaQueryWrapper = new LambdaQueryWrapper<>();
             lambdaQueryWrapper.like(StringUtils.isNotBlank(name),
                     Department::getName, name);
+            // check duplicate on insert
             lambdaQueryWrapper.eq(StringUtils.isNotBlank(newName),
                     Department::getName, newName);
             Page<Department> p = new Page<>(pageNum, pageSize);

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ *  Menu controller
  * </p>
  *
  * @author sgcsm

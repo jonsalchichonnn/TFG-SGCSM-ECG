@@ -25,12 +25,6 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-//    @GetMapping()
-//    public HttpResponse<List<User>> getUsers(Integer pageNum, Integer pageSize, String name, Integer sex) {
-//        return userService.getUsers(pageNum, pageSize, name, sex);
-
-//    }
-
     @GetMapping()
     public HttpResponse<List<User>> getUsers(UserDTO userDTO) {
         return userService.getUsers(userDTO);

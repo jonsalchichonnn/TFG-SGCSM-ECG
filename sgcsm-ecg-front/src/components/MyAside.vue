@@ -40,11 +40,5 @@ export default {
     }
 
   },
-  // mounted: {
-  //   routes() {
-  //     console.log("rutas menu = ", this.$store.state.routes.routes)
-  //     return this.$store.state.routes.routes
-  //   }
-  // }
 };
 </script>

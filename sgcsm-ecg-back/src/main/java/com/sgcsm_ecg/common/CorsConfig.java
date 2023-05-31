@@ -9,9 +9,9 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                //是否发送Cookie
+                //allow Cookies
                 .allowCredentials(true)
-                //放⾏哪些原始域
+                //allowed domains
                 .allowedOriginPatterns("*")
                 .allowedMethods(new String[]{"GET", "POST", "PUT", "DELETE"})
                 .allowedHeaders("*")

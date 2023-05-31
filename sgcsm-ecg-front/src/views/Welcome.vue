@@ -51,24 +51,14 @@ export default {
   name: "WelcomePage",
   components: {DateUtils},
   data() {
-
     return {
-      // user: {}
     }
-  },
-  methods: {
-    // init() {
-    //   this.user = JSON.parse(sessionStorage.getItem('currentUser'))
-    // }
   },
   computed:{
     user(){
       return this.$store.state.currentUser.user
     }
   }
-  // created() {
-  //   this.init()
-  // }
 }
 </script>
 

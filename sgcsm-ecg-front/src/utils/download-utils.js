@@ -1,5 +1,7 @@
-// download utils for exporting data
-// via axios we make requests to our backend
+/*
+download utils for exporting data
+via axios we make requests to our backend
+*/
 import axios from "axios";
 
 // set a default response type (arraybuffer as Excel should be returned) for axios

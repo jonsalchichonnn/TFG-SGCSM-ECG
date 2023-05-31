@@ -73,11 +73,6 @@
             <el-input v-model="addForm.name"></el-input>
           </el-col>
         </el-form-item>
-        <!--        <el-form-item label="Password" prop="password">-->
-        <!--          <el-col :span="20">-->
-        <!--            <el-input v-model="addForm.password" show-password></el-input>-->
-        <!--          </el-col>-->
-        <!--        </el-form-item>-->
         <el-form-item label="Age" prop="age">
           <el-col :span="20">
             <el-input v-model="addForm.age"></el-input>
@@ -161,7 +156,6 @@ export default {
     }
 
     return {
-      // user: {},
       admin2: null, // Edit object
       infoDialogVisible: false,
       pwdDialogVisible: false,
@@ -295,12 +289,11 @@ export default {
             console.log(res);
             this.loading = false;
             if (res.code === 200) {
-              // this.user = res.data; // getData from HttpResponse wrapper
               this.$store.commit("initUser", res.data)
             } else {
               this.$message.error(res.msg);
             }
-          }); // ADD EXCEPTION CONTROL (码歌?)
+          }); // ADD EXCEPTION CONTROL (?)
     },
     updateUser() {
       // this.addForm.role = this.user.role;
@@ -313,7 +306,6 @@ export default {
               this.$message.success('Information updated successfully!');
               this.infoDialogVisible = false
               this.getCurrentUser();
-              // this.resetForm();
             } else {
               this.$message.error(res.msg);
             }
@@ -338,10 +330,6 @@ export default {
 
     }
   },
-  mounted() {
-    // this.init()
-    // this.getCurrentUser()
-  }
 }
 </script>
 
